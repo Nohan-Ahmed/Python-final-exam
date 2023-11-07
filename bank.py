@@ -15,7 +15,7 @@ class Account:
         self.accountType = account_type
 
         self.__balance = 0
-        self._loan = 0
+        self._track_loans = 0
         self.__isBankrupt = False
 
         # track history.
@@ -50,48 +50,62 @@ class Account:
             if amount > 0:
                 self.balance += amount
                 Account._total_balance += amount
-                print(
-                    f"${amount} has been successfully deposited to account number: {self.accNo}"
-                )
+                print(f"You have successfully deposited: ${amount}")
 
     def withdraw(self, amount):
         if self.isBankrupt == False and self.balance > amount:
             self.balance -= amount
             Account._total_balance -= amount
-            print(
-                f"${amount} successfully withdrawn to account number: {self.accNo}"
-            )
+            print(f"You have successfully withdraw: ${amount} ")
             return amount
         else:
             print("Withdrawal amount exceeded")
 
-    def transfer_money(self, receiver: object, amount):
+    def transfer_money(self, receiver_accNo, amount):
         if self.balance > amount:
-
             if self.isBankrupt == False:
                 for account in Account.accounts:
-                    if account.accNo == receiver.accNo:
-                        self.withdraw(amount)
-                        receiver.deposit(amount)
-                        self._transaction_history.append({receiver: amount})
-                        # print("Elu milu kilu")
-                        break
+                    if account.accNo == receiver_accNo:
+                        if account.type == 'admin':
+                            print("You can't send money to the admin account!")
+                            return
+                        self.balance -= amount
+                        account.balance += amount
+                        self._transaction_history.append({account: amount})
+                        print(
+                            f"${amount} successfully transferred from account number: {account.accNo}"
+                        )
+                        print(f'Your current balance is now: ${self.balance}')
+                        return
                 else:
-                    print('Account does not exist')
+                    print(f'Account No {receiver_accNo} does not exist')
+                    return
             else:
                 print('the bank is bankrupt.'.capitalize())
+                return
+        else:
+            print(
+                f"You don't have enough money, your current balance: {self.balance}"
+            )
 
     def show_transaction_history(self):
         for item in self._transaction_history:
             for k, v in item.items():
                 print(f'Account no: {k.accNo}, transaction: ${v}')
+        if len(self._transaction_history) == 0:
+            print("No transactions yet!")
 
     def take_loan(self, amount):
-        if amount > 0 and self._loan != 2 and Account.isLoan:
+        if amount > 0 and self._track_loans != 2:
+            if Account.isLoan == False:
+                print("Loan ")
             self.balance += amount
-            self.loan -= 1
+            self._track_loans -= 1
             Account._total_balance -= amount
             Account._total_loan += amount
+            print(
+                f"You got a ${amount} loan, your current balance is ${self.balance}"
+            )
 
     # delete an account
     def delete_account(self, accountNo):
