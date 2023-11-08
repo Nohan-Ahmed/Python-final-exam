@@ -157,10 +157,7 @@ def register():
 
 
 def main():
-    alice = Account('Alice', 'alice@gmail.com', 'MooN', 'sv')
-    olivia = Account('Olivai Radrigo', 'olivia@gmail.com', 'MooN', 'cr')
-    selena = Account('Selena Gomez', 'selena@gmail.com', 'MooN', 'sv')
-    current_user = olivia
+    current_user = None
 
     while (True):
         if current_user == None:
