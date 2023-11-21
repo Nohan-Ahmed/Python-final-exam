@@ -151,7 +151,7 @@ def register():
             return Account(name, email, address, 'current')
         case _:
             print(f'\n----------------------------------------')
-            print("\n##### Invalid option #####")
+            print("\n##### Invalid account type #####")
             return None
 
 
@@ -162,15 +162,21 @@ def main():
     # infiti loop start.
     while (True):
         # if current_user=
-        print(f'\n--------------- Status ----------------')
+        print(f'--------------- Status ----------------')
         print("1. Admin\n2. Users\n3. Exit")
-
-        choice = int(input("Enter you choice: "))
+        try:
+            choice = int(input("Enter you choice: "))
+        except Exception as e:
+            print("\n--------------------------------------------------------")
+            print(f"Error raised: {e}")
+            print("--------------------------------------------------------")
+            continue
 
         if (choice == 1):
             # this code part for admin.
             print("\n--------------------------------------------------------")
-            print(f'Admin Name = {admin.name} | Admin password = {admin.accNo}')
+            print(
+                f'Admin Name = {admin.name} | Admin password = {admin.accNo}')
             print("--------------------------------------------------------\n")
 
             name = input("Enter the admin name: ")
@@ -263,7 +269,7 @@ def main():
                                 print(
                                     "\n--------------------------------------------------------"
                                 )
-                                print("\n##### Invalid option #####")
+                                print("##### Invalid option #####")
                     except Exception as e:
                         print(f'Error: {e}')
 
